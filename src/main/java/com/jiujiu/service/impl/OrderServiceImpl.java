@@ -118,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public WebResult.Result userReFund(String phone) {
+    public WebResult.Result userReFund(String phone,String state) {
 
         JiuJiuUser userInfo = jiuJiuUserDao.findByPhone(phone);
 
@@ -130,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
         param.put("amount",new BigDecimal(userFund.getAmount()));
         param.put("rechargeMode",String.valueOf(userFund.getReFundModel()));
         param.put("userId",userInfo.getId());
-        param.put("state","0");
+        param.put("state",state);
         String toJSONString = JsonUtil.toJSONString(param);
         String s = HttpClientUtil.httpPostWithJSON(userFund.getReFundUrl(), toJSONString);
         log.debug("用户退款信息 {}",s);
@@ -241,6 +241,21 @@ public class OrderServiceImpl implements OrderService {
 
         JiuJiuOrder jiuOrder = jiuJiuOrderDao.findByRechargeId(jiuJiuOrder.getRechargeId());
 
+
+        JiuJiuUser jiuJiuUser = jiuJiuUserDao.findById(jiuOrder.getUserId()).get();
+
+        int accountStatus = 0;
+        switch (jiuJiuUser.getAccountStatus()){
+            case 0:
+                accountStatus = 1;
+            break;
+            case 2:
+                accountStatus = 3;
+            break;
+        }
+
+        jiuJiuUserDao.updateUserStatusById(accountStatus,jiuOrder.getUserId());
+
         Map param = Maps.newHashMap();
         param.put("userId",jiuOrder.getUserId());
         String toJSONString = JsonUtil.toJSONString(param);
@@ -251,11 +266,13 @@ public class OrderServiceImpl implements OrderService {
             return WebResult.returnFail("用户微信转账失败");
         }
 
-        BackResult backResult = JsonUtil.parseObject(s, BackResult.class);
+        WxRefundResult backResult = JsonUtil.parseObject(s, WxRefundResult.class);
 
         if (backResult != null && backResult.getCode().equals(1105) ){
             userOrderDao.updateWxReturnStatus(jiuJiuOrder.getRechargeId());
         }
+
+        jiuJiuUserDao.updateUserStatusById(jiuJiuUser.getAccountStatus(),jiuOrder.getUserId());
 
         return WebResult.returnSuccess(backResult);
     }

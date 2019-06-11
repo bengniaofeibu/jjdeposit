@@ -18,7 +18,7 @@ public interface OrderService {
 
     void advanceRefund(String orderId);
 
-    WebResult.Result userReFund(String phone);
+    WebResult.Result userReFund(String phone,String state);
 
     void updateUserOrderStatus(JiuJiuOrder jiuJiuOrder);
 

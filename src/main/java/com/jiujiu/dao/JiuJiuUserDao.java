@@ -23,4 +23,9 @@ public interface JiuJiuUserDao extends JpaRepository<JiuJiuUser,String> {
     @Transactional
     @Query("update JiuJiuUser jjuser set jjuser.accountStatus = ?1,jjuser.deposit = 0 where jjuser.phone = ?2")
     void updateUserStatus(Integer accountStatus,String phone);
+
+    @Modifying
+    @Transactional
+    @Query("update JiuJiuUser jjuser set jjuser.accountStatus = ?1,jjuser.deposit = 0 where jjuser.id = ?2")
+    void updateUserStatusById(Integer accountStatus,String userId);
 }

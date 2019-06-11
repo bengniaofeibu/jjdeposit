@@ -28,4 +28,4 @@ user:
   reFundUrl: http://47.100.20.197:8082/pay/allRefund
   amount: 99.0
   reFundModel: 0
-  wxRefundUrl: http://47.100.20.197:8082/pay/wxTransfer
+  wxRefundUrl: http://47.101.202.147:6666/pay/wxTransfer

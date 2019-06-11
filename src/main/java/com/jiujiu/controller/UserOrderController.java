@@ -52,7 +52,13 @@ public class UserOrderController {
     @PostMapping(value = "/user/refund")
     @CrossOrigin
     public WebResult.Result userReFund(@RequestBody JiuJiuUser jiuJiuUser){
-        return orderService.userReFund(jiuJiuUser.getPhone());
+        return orderService.userReFund(jiuJiuUser.getPhone(),"0");
+    }
+
+    @PostMapping(value = "/user/directlyRefund")
+    @CrossOrigin
+    public WebResult.Result directlyUserReFund(@RequestBody JiuJiuUser jiuJiuUser){
+        return orderService.userReFund(jiuJiuUser.getPhone(),"1");
     }
 
     @PostMapping(value = "/user/wxRefund")
