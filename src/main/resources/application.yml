@@ -1,0 +1,31 @@
+
+server:
+  port: 8888
+
+
+
+spring:
+  application:
+    name: jjdeposit
+
+  datasource:
+#        url: jdbc:mysql://rm-uf60293l37qz86flzco.mysql.rds.aliyuncs.com/electric_bicycle_pro?useUnicode=true&characterEncoding=utf8
+        url: jdbc:mysql://rm-uf60293l37qz86flz.mysql.rds.aliyuncs.com/electric_bicycle_pro?useUnicode=true&characterEncoding=utf8
+        username: jjdc_123
+        password: jjdc_99bicycle
+        driver-class-name: com.mysql.jdbc.Driver
+
+  http:
+   encoding:
+     charset: utf-8
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+user:
+  reFundUrl: http://47.100.20.197:8082/pay/allRefund
+  amount: 99.0
+  reFundModel: 0
+  wxRefundUrl: http://47.100.20.197:8082/pay/wxTransfer
