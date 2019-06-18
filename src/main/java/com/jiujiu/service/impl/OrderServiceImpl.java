@@ -140,6 +140,26 @@ public class OrderServiceImpl implements OrderService {
         }
 
         BackResult backResult = JsonUtil.parseObject(s, BackResult.class);
+        if ("1".equals(state) && backResult != null
+                              && backResult.getCode() != null
+                              && 200 == backResult.getCode()){
+
+            Integer userStatus = 0;
+
+            switch (userInfo.getAccountStatus()){
+                case 1:
+                    userStatus = 0;
+                    break;
+                case 3:
+                    userStatus = 2;
+                    break;
+            }
+
+            //更新用户表的信息
+            jiuJiuUserDao.updateUserStatus(userStatus,userInfo.getPhone());
+
+        }
+
         return WebResult.returnSuccess(backResult);
     }
 
