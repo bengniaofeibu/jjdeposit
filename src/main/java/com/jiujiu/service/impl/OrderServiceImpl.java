@@ -142,10 +142,9 @@ public class OrderServiceImpl implements OrderService {
         BackResult backResult = JsonUtil.parseObject(s, BackResult.class);
         if ("1".equals(state) && backResult != null
                               && backResult.getCode() != null
-                              && 200 == backResult.getCode()){
+                              && (200 == backResult.getCode() || 3 == backResult.getCode())){
 
             Integer userStatus = 0;
-
             switch (userInfo.getAccountStatus()){
                 case 1:
                     userStatus = 0;
